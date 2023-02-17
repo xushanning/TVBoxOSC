@@ -43,6 +43,7 @@ public class VodInfo implements Serializable {
     //导演<![CDATA[陈国星]]>
     public String director;
     public ArrayList<VodSeriesFlag> seriesFlags;
+    // 真正的地址
     public LinkedHashMap<String, List<VodSeries>> seriesMap;
     public String des;// <![CDATA[权来]
     public String playFlag = null;
@@ -128,6 +129,9 @@ public class VodInfo implements Serializable {
     public static class VodSeries implements Serializable {
 
         public String name;
+        /**
+         * 这个就是真正的播放地址
+         */
         public String url;
         public boolean selected;
 

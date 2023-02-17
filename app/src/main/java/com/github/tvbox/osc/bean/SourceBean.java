@@ -2,6 +2,9 @@ package com.github.tvbox.osc.bean;
 
 import java.util.ArrayList;
 
+/**
+ * 这个包含了解析地址等最核心的数据
+ */
 public class SourceBean {
     private String key;
     private String name;

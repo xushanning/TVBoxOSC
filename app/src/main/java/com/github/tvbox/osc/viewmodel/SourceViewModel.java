@@ -53,10 +53,16 @@ import java.util.concurrent.TimeoutException;
  * @description:
  */
 public class SourceViewModel extends ViewModel {
+    /**
+     * 首页顶部tab的数据源
+     */
     public MutableLiveData<AbsSortXml> sortResult;
     public MutableLiveData<AbsXml> listResult;
     public MutableLiveData<AbsXml> searchResult;
     public MutableLiveData<AbsXml> quickSearchResult;
+    /**
+     * 详情结果
+     */
     public MutableLiveData<AbsXml> detailResult;
     public MutableLiveData<JSONObject> playResult;
 
@@ -71,6 +77,11 @@ public class SourceViewModel extends ViewModel {
 
     public static final ExecutorService spThreadPool = Executors.newSingleThreadExecutor();
 
+    /**
+     * 获取首页顶部tab的数据
+     *
+     * @param sourceKey
+     */
     public void getSort(String sourceKey) {
         if (sourceKey == null) {
             sortResult.postValue(null);
@@ -78,6 +89,7 @@ public class SourceViewModel extends ViewModel {
         }
         SourceBean sourceBean = ApiConfig.get().getSource(sourceKey);
         int type = sourceBean.getType();
+        //根据不同的类型：xml，json，spider进行解析
         if (type == 3) {
             Runnable waitResponse = new Runnable() {
                 @Override
@@ -86,7 +98,9 @@ public class SourceViewModel extends ViewModel {
                     Future<String> future = executor.submit(new Callable<String>() {
                         @Override
                         public String call() throws Exception {
+                            // 这个就是启动线程从爬虫里面去获取数据
                             Spider sp = ApiConfig.get().getCSP(sourceBean);
+                            //直接看这个homeContent直接返回""，但是实际调用的是动态加载jar里面的方法
                             return sp.homeContent(true);
                         }
                     });
@@ -100,7 +114,7 @@ public class SourceViewModel extends ViewModel {
                         e.printStackTrace();
                     } finally {
                         if (sortJson != null) {
-                            AbsSortXml sortXml = sortJson(sortResult, sortJson);
+                            AbsSortXml sortXml = sortJson(sortJson);
                             if (sortXml != null && Hawk.get(HawkConfig.HOME_REC, 0) == 1) {
                                 AbsXml absXml = json(null, sortJson, sourceBean.getKey());
                                 if (absXml != null && absXml.movie != null && absXml.movie.videoList != null && absXml.movie.videoList.size() > 0) {
@@ -151,7 +165,7 @@ public class SourceViewModel extends ViewModel {
                                 sortXml = sortXml(sortResult, xml);
                             } else if (type == 1) {
                                 String json = response.body();
-                                sortXml = sortJson(sortResult, json);
+                                sortXml = sortJson(json);
                             }
                             if (sortXml != null && Hawk.get(HawkConfig.HOME_REC, 0) == 1 && sortXml.list != null && sortXml.list.videoList != null && sortXml.list.videoList.size() > 0) {
                                 ArrayList<String> ids = new ArrayList<>();
@@ -240,6 +254,13 @@ public class SourceViewModel extends ViewModel {
         void done(List<Movie.Video> videos);
     }
 
+    /**
+     *？？？？？？
+     *
+     * @param sourceBean
+     * @param ids
+     * @param callback
+     */
     void getHomeRecList(SourceBean sourceBean, ArrayList<String> ids, HomeRecCallback callback) {
         if (sourceBean.getType() == 3) {
             Runnable waitResponse = new Runnable() {
@@ -476,6 +497,13 @@ public class SourceViewModel extends ViewModel {
         }
     }
 
+    /**
+     * 获取播放数据
+     * @param sourceKey
+     * @param playFlag
+     * @param progressKey
+     * @param url
+     */
     public void getPlay(String sourceKey, String playFlag, String progressKey, String url) {
         SourceBean sourceBean = ApiConfig.get().getSource(sourceKey);
         int type = sourceBean.getType();
@@ -537,7 +565,8 @@ public class SourceViewModel extends ViewModel {
         return filter;
     }
 
-    private AbsSortXml sortJson(MutableLiveData<AbsSortXml> result, String json) {
+    //就是个json，有必要解析的这么麻烦吗？
+    private AbsSortXml sortJson(String json) {
         try {
             JsonObject obj = JsonParser.parseString(json).getAsJsonObject();
             AbsSortJson sortJson = new Gson().fromJson(obj, new TypeToken<AbsSortJson>() {

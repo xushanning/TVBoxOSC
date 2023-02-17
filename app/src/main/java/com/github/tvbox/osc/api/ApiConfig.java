@@ -420,6 +420,11 @@ public class ApiConfig {
         void fail(int code, String msg);
     }
 
+    /**
+     * 获取源
+     * @param key
+     * @return
+     */
     public SourceBean getSource(String key) {
         if (!sourceBeanList.containsKey(key))
             return null;

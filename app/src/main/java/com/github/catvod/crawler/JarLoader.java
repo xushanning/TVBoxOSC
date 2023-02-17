@@ -15,8 +15,14 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import dalvik.system.DexClassLoader;
 
+/**
+ * 加载从网络下载下来的jar包
+ */
 public class JarLoader {
     private DexClassLoader classLoader = null;
+    /**
+     * 缓存
+     */
     private ConcurrentHashMap<String, Spider> spiders = new ConcurrentHashMap<>();
     private Method proxyFun = null;
 

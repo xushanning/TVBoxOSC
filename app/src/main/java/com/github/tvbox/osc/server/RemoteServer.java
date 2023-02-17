@@ -45,7 +45,9 @@ import fi.iki.elonen.NanoHTTPD;
 /**
  * @author pj567
  * @date :2021/1/5
- * @description:
+ * @description:在android中搭建一个HTTP服务器，供远程访问
+ * 用处：比如在tv端安装这个应用后，可以直接在手机上打开这个服务器，然后可以直接操控tvBox了，进行各种操作
+ * 如果复用在android上的话，这个暂时不需要
  */
 public class RemoteServer extends NanoHTTPD {
     private Context mContext;
@@ -62,6 +64,9 @@ public class RemoteServer extends NanoHTTPD {
         addPostRequestProcess();
     }
 
+    /**
+     *将h5工程，部署到本地的服务器上去
+     */
     private void addGetRequestProcess() {
         getRequestList.add(new RawRequestProcess(this.mContext, "/", R.raw.index, NanoHTTPD.MIME_HTML));
         getRequestList.add(new RawRequestProcess(this.mContext, "/index.html", R.raw.index, NanoHTTPD.MIME_HTML));

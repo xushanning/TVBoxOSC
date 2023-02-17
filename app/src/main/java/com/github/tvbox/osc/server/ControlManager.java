@@ -20,7 +20,7 @@ import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 /**
  * @author pj567
  * @date :2021/1/4
- * @description:
+ * @description:内置服务器控制器
  */
 public class ControlManager {
     private static ControlManager instance;

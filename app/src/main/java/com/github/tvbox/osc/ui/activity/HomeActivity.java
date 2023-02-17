@@ -99,6 +99,7 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void init() {
         EventBus.getDefault().register(this);
+        //开启内置的服务器
         ControlManager.get().startServer();
         initView();
         initViewModel();

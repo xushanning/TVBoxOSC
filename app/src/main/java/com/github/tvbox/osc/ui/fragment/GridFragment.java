@@ -25,7 +25,7 @@ import com.owen.tvrecyclerview.widget.V7GridLayoutManager;
 /**
  * @author pj567
  * @date :2020/12/21
- * @description:
+ * @description: 普通栏目的Fragment
  */
 public class GridFragment extends BaseLazyFragment {
     private MovieSort.SortData sortData = null;

@@ -84,7 +84,14 @@ import me.jessyan.autosize.AutoSize;
 import xyz.doikki.videoplayer.player.ProgressManager;
 import xyz.doikki.videoplayer.player.VideoView;
 
+/**
+ * 播放Activity
+ * 核心
+ */
 public class PlayActivity extends BaseActivity {
+    /**
+     * 播放器
+     */
     private VideoView mVideoView;
     private TextView mPlayLoadTip;
     private ImageView mPlayLoadErr;
@@ -220,6 +227,11 @@ public class PlayActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 进行播放，将url传到播放器里面去
+     * @param url
+     * @param headers
+     */
     void playUrl(String url, HashMap<String, String> headers) {
         runOnUiThread(new Runnable() {
             @Override
@@ -255,6 +267,7 @@ public class PlayActivity extends BaseActivity {
                         PlayerHelper.updateCfg(mVideoView, mVodPlayerCfg);
                         mVideoView.setProgressKey(progressKey);
                         if (headers != null) {
+                            //这里就是设置播放地址
                             mVideoView.setUrl(url, headers);
                         } else {
                             mVideoView.setUrl(url);
@@ -320,6 +333,7 @@ public class PlayActivity extends BaseActivity {
             Bundle bundle = intent.getExtras();
             mVodInfo = (VodInfo) bundle.getSerializable("VodInfo");
             sourceKey = bundle.getString("sourceKey");
+            // 这个包含了真正的地址
             sourceBean = ApiConfig.get().getSource(sourceKey);
             initPlayerCfg();
             play();

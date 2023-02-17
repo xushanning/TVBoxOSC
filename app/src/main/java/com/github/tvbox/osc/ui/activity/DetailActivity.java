@@ -59,7 +59,7 @@ import me.jessyan.autosize.utils.AutoSizeUtils;
 /**
  * @author pj567
  * @date :2020/12/22
- * @description:
+ * @description: 详情activity
  */
 public class DetailActivity extends BaseActivity {
     private LinearLayout llLayout;
